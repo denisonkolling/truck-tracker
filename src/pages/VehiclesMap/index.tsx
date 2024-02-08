@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react';
+import { useState, useEffect } from 'react';
 import { Loader, Content } from './styles';
 import Map from '../../components/Map';
 import { getVehiclePositions } from '../../services/api.js';

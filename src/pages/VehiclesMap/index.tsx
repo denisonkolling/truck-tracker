@@ -4,12 +4,25 @@ import Map from '../../components/Map';
 import { getVehiclePositions } from '../../services/api.js';
 
 const VehiclesMap = () => {
-	const [positions, setPositions] = useState();
-	const [loading, setLoading] = useState(false);
 
-	useEffect(() => {
-		init();
-	}, []);
+    interface IPosition {
+      id: number;
+      datetime: string;
+      license_plate: string;
+      latitude: number;
+      longitude: number;
+      ignition: boolean;
+      speed: number;
+    }
+
+  	const [positions, setPositions] = useState<IPosition[]>([]);
+  	const [loading, setLoading] = useState(false);
+
+  	useEffect(() => {
+      setLoading(true);
+  		init();
+      setLoading(false);
+  	}, []);
 
 	const init = () => {
 		getVehiclePositions()
@@ -23,20 +36,20 @@ const VehiclesMap = () => {
 
 	return (
 		<Content>
-			{loading || !positions ? (
-				<Loader></Loader>
-			) : (
-				<>
-					<Map
-						positions={positions}
-						center={
-							positions[0]
-								? [positions[0].latitude, positions[0].longitude]
-								: [-27.5961, -48.5651]
-						}
-					/>
-				</>
-			)}
+{loading || !positions ? (
+  <Loader></Loader>
+) : (
+  <>
+    <Map
+      positions={positions}
+      center={
+        positions[0]
+          ? { latitude: positions[0].latitude, longitude: positions[0].longitude }
+          : { latitude: -27.5961, longitude: -48.5651 }
+      }
+    />
+  </>
+)}
 		</Content>
 	);
 };
